@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام متابعة الشيكات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider round"></div>
+        </label>
+        <em>تبديل الوضع الداكن</em>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>نظام متابعة الشيكات</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-page="home">الرئيسية</a></li>
+                    <li><a href="#" data-page="check-list">قائمة الشيكات</a></li>
+                    <li><a href="#" data-page="analytics">التحليلات</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- الصفحة الرئيسية -->
+            <section id="home" class="page active">
+                <div class="dashboard">
+                    <h2>لوحة المعلومات</h2>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                            <div class="stat-info">
+                                <h3>إجمالي الشيكات</h3>
+                                <p id="total-checks">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon warning"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-info">
+                                <h3>شيكات تستحق خلال أسبوع</h3>
+                                <p id="due-soon-checks">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon danger"><i class="fas fa-calendar-times"></i></div>
+                            <div class="stat-info">
+                                <h3>شيكات منتهية</h3>
+                                <p id="expired-checks">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon success"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-info">
+                                <h3>شيكات مصروفة</h3>
+                                <p id="cashed-checks">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recent-checks">
+                        <h3>أحدث الشيكات</h3>
+                        <div class="table-container">
+                            <table id="recent-checks-table">
+                                <thead>
+                                    <tr>
+                                        <th>الرقم</th>
+                                        <th>التاريخ</th>
+                                        <th>الجهة</th>
+                                        <th>البنك</th>
+                                        <th>المبلغ (ج.م)</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-checks-body">
+                                    <!-- سيتم ملء هذا الجزء بواسطة JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- صفحة قائمة الشيكات -->
+            <section id="check-list" class="page">
+                <h2>قائمة الشيكات</h2>
+                <div class="filter-controls">
+                    <button class="btn filter-btn active" data-filter="all">جميع الشيكات</button>
+                    <button class="btn filter-btn" data-filter="expired">الشيكات المنتهية</button>
+                    <button class="btn filter-btn" data-filter="due-soon">تستحق خلال أسبوع</button>
+                    <button class="btn filter-btn" data-filter="cashed">الشيكات المصروفة</button>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-checks" placeholder="بحث في الشيكات...">
+                    <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="table-container">
+                    <table id="checks-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الشيك</th>
+                                <th>تاريخ الاستحقاق</th>
+                                <th>الجهة</th>
+                                <th>البنك</th>
+                                <th>المبلغ (ج.م)</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checks-table-body">
+                            <!-- سيتم ملء هذا الجزء بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- صفحة التحليلات -->
+            <section id="analytics" class="page">
+                <h2>تحليلات الشيكات</h2>
+                <div class="analytics-container">
+                    <div class="chart-container">
+                        <h3>توزيع الشيكات حسب البنك</h3>
+                        <canvas id="bank-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>توزيع الشيكات حسب الشهر</h3>
+                        <canvas id="month-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>توزيع الشيكات حسب الحالة</h3>
+                        <canvas id="status-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>إجمالي المبالغ حسب الجهة</h3>
+                        <canvas id="entity-chart"></canvas>
+                    </div>
+                </div>
+                <div class="summary-container">
+                    <h3>ملخص الشيكات</h3>
+                    <div class="summary-stats">
+                        <div class="summary-item">
+                            <h4>إجمالي قيمة الشيكات</h4>
+                            <p id="total-amount">0 ج.م</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>متوسط قيمة الشيك</h4>
+                            <p id="average-amount">0 ج.م</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>أعلى قيمة شيك</h4>
+                            <p id="highest-amount">0 ج.م</p>
+                        </div>
+                        <div class="summary-item">
+                            <h4>أدنى قيمة شيك</h4>
+                            <p id="lowest-amount">0 ج.م</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>نظام متابعة الشيكات &copy; 2025</p>
+        </footer>
+    </div>
+
+    <!-- زر إضافة شيك جديد -->
+    <div class="add-check-btn" id="add-check-btn">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- نافذة إضافة شيك جديد -->
+    <div id="add-check-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>إضافة شيك جديد</h2>
+            <form id="check-form">
+                <div class="form-group">
+                    <label for="check-number">رقم الشيك</label>
+                    <input type="text" id="check-number" required>
+                </div>
+                <div class="form-group">
+                    <label for="check-date">تاريخ الاستحقاق</label>
+                    <input type="date" id="check-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="check-entity">الجهة</label>
+                    <input type="text" id="check-entity" required>
+                </div>
+                <div class="form-group">
+                    <label for="check-bank">البنك</label>
+                    <input type="text" id="check-bank" required>
+                </div>
+                <div class="form-group">
+                    <label for="check-amount">المبلغ (ج.م)</label>
+                    <input type="number" id="check-amount" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="check-status">الحالة</label>
+                    <select id="check-status" required>
+                        <option value="pending">قيد الانتظار</option>
+                        <option value="cashed">تم الصرف</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="check-notes">ملاحظات</label>
+                    <textarea id="check-notes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">حفظ الشيك</button>
+                    <button type="reset" class="btn secondary">إعادة تعيين</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الشيك -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>تعديل الشيك</h2>
+            <form id="edit-check-form">
+                <input type="hidden" id="edit-check-id">
+                <div class="form-group">
+                    <label for="edit-check-number">رقم الشيك</label>
+                    <input type="text" id="edit-check-number" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-check-date">تاريخ الاستحقاق</label>
+                    <input type="date" id="edit-check-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-check-entity">الجهة</label>
+                    <input type="text" id="edit-check-entity" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-check-bank">البنك</label>
+                    <input type="text" id="edit-check-bank" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-check-amount">المبلغ (ج.م)</label>
+                    <input type="number" id="edit-check-amount" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-check-status">الحالة</label>
+                    <select id="edit-check-status" required>
+                        <option value="pending">قيد الانتظار</option>
+                        <option value="cashed">تم الصرف</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-check-notes">ملاحظات</label>
+                    <textarea id="edit-check-notes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">حفظ التغييرات</button>
+                    <button type="button" class="btn danger" id="delete-check">حذف الشيك</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل حضور وانصراف - صيدلية د. لؤة</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,9 +134,9 @@
             transition: opacity 0.3s ease;
         }
 
-        /* عكس عرض الفيديو للكاميرا الأمامية (تأثير المرآة) */
+        /* تمت إزالة تأثير المرآة للكاميرا الخلفية */
         #videoElement {
-            transform: scaleX(-1);
+            /* transform: scaleX(-1); */
         }
     </style>
 </head>
@@ -170,20 +168,7 @@
                     class="input-focus w-full p-4 border-2 border-gray-300 rounded-xl text-lg focus:ring-0 focus:border-blue-500 focus:outline-none">
             </div>
             
-            <!-- زر الكاميرا المضاف -->
-            <div>
-                <label class="block text-lg font-bold text-gray-700 mb-3">
-                    <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    التقاط صورة (اختياري)
-                </label>
-                <button id="openCameraButton" class="w-full p-4 border-2 border-dashed border-gray-400 rounded-xl text-lg text-gray-600 hover:bg-gray-50 transition ease-in-out">
-                    📷 فتح الكاميرا
-                </button>
-                <img id="photoPreview" class="hidden w-24 h-24 rounded-full mx-auto mt-4 border-4 border-green-500 shadow-md">
-            </div>
+            <!-- تم حذف زر الكاميرا والمعاينة من هنا -->
 
             <!-- نوع التسجيل -->
             <div>
@@ -229,7 +214,6 @@
             <!-- مؤشر التحميل -->
             <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-8">
                 <div class="spinner mb-4"></div>
-                <!-- Updated text color for better visibility on white background -->
                 <p class="text-gray-700 font-bold text-lg">جاري إنشاء البطاقة...</p>
             </div>
             
@@ -249,64 +233,62 @@
         </div>
 
         <!-- البطاقة المخفية (قالب الصورة) -->
-        <!-- Placed wrapper at the bottom of the body for absolute positioning context -->
-    </div>
-
-    <div id="attendanceTicketWrapper" style="position: absolute; left: -9999px; top: -9999px;">
-        <div id="attendanceTicket" class="compact-ticket" style="width: 450px; padding: 25px;">
-            
-            <!-- الخلفية المائية -->
-            <div class="watermark-bg absolute inset-0 rounded-2xl opacity-40 pointer-events-none"></div>
-            
-            <!-- المحتوى -->
-            <div class="relative z-10">
-                <!-- العنوان فقط -->
-                <div class="text-center mb-5 pb-3 border-b-2 border-blue-200">
-                    <h3 class="ticket-font-title text-2xl font-black text-gray-800">
-                        صيدلية د. لؤة
-                    </h3>
-                </div>
+        <div id="attendanceTicketWrapper" style="position: absolute; left: -9999px; top: -9999px;">
+            <div id="attendanceTicket" class="compact-ticket" style="width: 450px; padding: 25px;">
                 
-                <!-- البيانات -->
-                <div class="space-y-2.5 ticket-font-body">
-                    <!-- الاسم -->
-                    <div class="flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg border-r-4 border-blue-500">
-                        <span class="font-bold text-gray-700 text-base">👤 الاسم:</span>
-                        <span id="ticketName" class="font-black text-gray-900 text-lg"></span>
+                <!-- الخلفية المائية -->
+                <div class="watermark-bg absolute inset-0 rounded-2xl opacity-40 pointer-events-none"></div>
+                
+                <!-- المحتوى -->
+                <div class="relative z-10">
+                    <!-- العنوان فقط -->
+                    <div class="text-center mb-5 pb-3 border-b-2 border-blue-200">
+                        <h3 class="ticket-font-title text-2xl font-black text-gray-800">
+                            صيدلية د. لؤة
+                        </h3>
                     </div>
                     
-                    <!-- نوع التسجيل -->
-                    <div id="ticketTypeRow" class="flex items-center justify-between p-3 rounded-lg border-r-4">
-                        <span class="font-bold text-gray-700 text-base">📋 التسجيل:</span>
-                        <span id="ticketType" class="font-black text-lg"></span>
-                    </div>
-                    
-                    <!-- التاريخ -->
-                    <div class="flex items-center justify-between bg-gradient-to-r from-purple-50 to-pink-50 p-3 rounded-lg border-r-4 border-purple-500">
-                        <span class="font-bold text-gray-700 text-base">📅 التاريخ:</span>
-                        <span id="ticketDate" class="font-black text-gray-900 text-base"></span>
-                    </div>
-                    
-                    <!-- الوقت -->
-                    <div class="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 p-3 rounded-lg border-r-4 border-green-500">
-                        <span class="font-bold text-gray-700 text-base">🕐 الوقت:</span>
-                        <span id="ticketTime" class="font-black text-gray-900 text-base"></span>
-                    </div>
-                </div>
+                    <!-- البيانات -->
+                    <div class="space-y-2.5 ticket-font-body">
+                        <!-- الاسم -->
+                        <div class="flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg border-r-4 border-blue-500">
+                            <span class="font-bold text-gray-700 text-base">👤 الاسم:</span>
+                            <span id="ticketName" class="font-black text-gray-900 text-lg"></span>
+                        </div>
+                        
+                        <!-- نوع التسجيل -->
+                        <div id="ticketTypeRow" class="flex items-center justify-between p-3 rounded-lg border-r-4">
+                            <span class="font-bold text-gray-700 text-base">📋 التسجيل:</span>
+                            <span id="ticketType" class="font-black text-lg"></span>
+                        </div>
+                        
+                        <!-- التاريخ -->
+                        <div class="flex items-center justify-between bg-gradient-to-r from-purple-50 to-pink-50 p-3 rounded-lg border-r-4 border-purple-500">
+                            <span class="font-bold text-gray-700 text-base">📅 التاريخ:</span>
+                            <span id="ticketDate" class="font-black text-gray-900 text-base"></span>
+                        </div>
+                        
+                        <!-- الوقت -->
+                        <div class="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 p-3 rounded-lg border-r-4 border-green-500">
+                            <span class="font-bold text-gray-700 text-base">🕐 الوقت:</span>
+                            <span id="ticketTime" class="font-black text-gray-900 text-base"></span>
+                        </div>
 
-                <!-- حاوية الصورة الملتقطة - مضافة -->
-                <div id="ticketPhotoContainer" class="hidden text-center pt-4 mt-4 border-t-2 border-dashed border-gray-300">
-                    <img id="ticketPhoto" class="w-24 h-24 rounded-full border-4 border-blue-300 mx-auto" alt="صورة الموظف">
+                        <!-- حاوية الصورة المضافة -->
+                        <div id="ticketPhotoContainer" class="hidden pt-3 mt-3 border-t border-gray-200">
+                            <img id="ticketPhoto" src="" class="w-full h-auto rounded-lg object-cover" alt="صورة الموظف">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- نافذة الكاميرا - مضافة -->
+    <!-- نافذة الكاميرا -->
     <div id="cameraModal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-2xl max-w-lg w-full">
             <h3 class="text-2xl font-bold text-center mb-4">التقاط صورة</h3>
-            <video id="videoElement" class="w-full h-auto rounded-lg mb-4 bg-gray-200" playsinline autoplay></video>
+            <video id="videoElement" class="w-full h-auto rounded-lg mb-4 bg-gray-200" playsinline autoplay muted></video>
             <button id="captureButton" class="w-full p-4 bg-blue-600 text-white font-bold rounded-lg text-lg hover:bg-blue-700 transition">
                 📸 التقاط
             </button>
@@ -317,6 +299,10 @@
             <canvas id="canvasElement" class="hidden"></canvas>
         </div>
     </div>
+
+    <!-- === السكريبتات === -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -335,23 +321,19 @@
             const ticketTime = document.getElementById('ticketTime');
             const ticketType = document.getElementById('ticketType');
             const ticketTypeRow = document.getElementById('ticketTypeRow');
+            const ticketPhotoContainer = document.getElementById('ticketPhotoContainer');
+            const ticketPhoto = document.getElementById('ticketPhoto');
 
-            // --- عناصر الكاميرا المضافة ---
-            const openCameraButton = document.getElementById('openCameraButton');
+            // --- عناصر الكاميرا ---
             const cameraModal = document.getElementById('cameraModal');
             const videoElement = document.getElementById('videoElement');
             const captureButton = document.getElementById('captureButton');
             const closeModalButton = document.getElementById('closeModalButton');
             const canvasElement = document.getElementById('canvasElement');
-            const photoPreview = document.getElementById('photoPreview');
             
-            // عناصر حاوية الصورة في البطاقة
-            const ticketPhotoContainer = document.getElementById('ticketPhotoContainer');
-            const ticketPhoto = document.getElementById('ticketPhoto');
-
             let capturedImageDataUrl = null;
             let stream = null;
-            // --- نهاية العناصر المضافة ---
+            // --- نهاية العناصر ---
 
 
             // دالة عرض رسالة الحالة
@@ -369,24 +351,22 @@
                 
                 statusMessage.classList.remove('hidden');
                 
-                // إخفاء الرسالة بعد 5 ثواني
                 setTimeout(() => {
                     statusMessage.classList.add('hidden');
                 }, 5000);
             }
 
-            // --- منطق الكاميرا المضاف ---
+            // --- منطق الكاميرا ---
 
             // فتح الكاميرا
-            openCameraButton.addEventListener('click', async (e) => {
-                e.preventDefault();
+            async function startCameraCapture() {
                 cameraModal.classList.remove('hidden');
-                
                 try {
                     if (stream) {
                         stream.getTracks().forEach(track => track.stop());
                     }
                     
+                    // طلب الكاميرا الخلفية
                     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
                     videoElement.srcObject = stream;
                 } catch (err) {
@@ -394,7 +374,7 @@
                     showStatus('❌ لم يتم السماح بالوصول للكاميرا', 'error');
                     cameraModal.classList.add('hidden');
                 }
-            });
+            }
 
             // إغلاق نافذة الكاميرا
             function closeModal() {
@@ -406,200 +386,188 @@
             }
             closeModalButton.addEventListener('click', closeModal);
 
-            // التقاط الصورة
+            <!-- التقاط الصورة -->
             captureButton.addEventListener('click', () => {
                 if (!stream) return;
 
                 const context = canvasElement.getContext('2d');
-                // تعيين أبعاد الكانفاس لمطابقة الفيديو
                 canvasElement.width = videoElement.videoWidth;
                 canvasElement.height = videoElement.videoHeight;
                 
-                // عكس الكانفاس أفقياً لمطابقة الفيديو (تأثير المرآة)
-                context.translate(canvasElement.width, 0);
-                context.scale(-1, 1);
+                /* تم إلغاء تأثير المرآة للكاميرا الخلفية */
+                // context.translate(canvasElement.width, 0);
+                // context.scale(-1, 1);
                 
-                // رسم إطار الفيديو على الكانفاس
                 context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-
-                // الحصول على الصورة كـ Data URL
                 capturedImageDataUrl = canvasElement.toDataURL('image/png');
                 
-                // عرض المعاينة
-                photoPreview.src = capturedImageDataUrl;
-                photoPreview.classList.remove('hidden');
-                openCameraButton.textContent = '✅ تم التقاط الصورة (تغيير)';
-                
-                // إغلاق النافذة
                 closeModal();
+                
+                // --- الخطوة الجديدة: بدء الإنشاء والمشاركة فوراً ---
+                createAndShareTicket();
             });
             // --- نهاية منطق الكاميرا ---
 
 
-            // دالة إنشاء البطاقة
+            // الزر الرئيسي: الآن يقوم فقط بالتحقق وفتح الكاميرا
             generateButton.addEventListener('click', async () => {
-    // إخفاء العناصر السابقة
-    statusMessage.classList.add('hidden');
-    imageContainer.classList.add('hidden');
-    ticketPhotoContainer.classList.add('hidden');
-    ticketPhoto.src = '';
-
-    // التحقق من الاسم
-    const name = employeeNameInput.value.trim();
-    if (!name) {
-        showStatus('⚠️ الرجاء إدخال اسم الموظف أولاً', 'error');
-        employeeNameInput.focus();
-        return;
-    }
-
-    // التحقق من نوع التسجيل
-    const recordTypeRadio = document.querySelector('input[name="recordType"]:checked');
-    if (!recordTypeRadio) {
-        showStatus('⚠️ الرجاء اختيار نوع التسجيل (حضور أو انصراف)', 'error');
-        return;
-    }
-
-    const recordType = recordTypeRadio.value;
-    loadingSpinner.classList.remove('hidden');
-
-    try {
-        // 🔹 تشغيل الكاميرا الخلفية
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
-        videoElement.srcObject = stream;
-
-        // 🔹 إنشاء مؤقت العدّ التنازلي
-        const countdownElement = document.createElement('div');
-        countdownElement.style.position = 'fixed';
-        countdownElement.style.top = '50%';
-        countdownElement.style.left = '50%';
-        countdownElement.style.transform = 'translate(-50%, -50%)';
-        countdownElement.style.fontSize = '5rem';
-        countdownElement.style.color = '#ffffff';
-        countdownElement.style.fontWeight = 'bold';
-        countdownElement.style.background = 'rgba(0, 0, 0, 0.6)';
-        countdownElement.style.padding = '1rem 2rem';
-        countdownElement.style.borderRadius = '1rem';
-        countdownElement.style.zIndex = '9999';
-        document.body.appendChild(countdownElement);
-
-        // 🔹 عدّ تنازلي 5 ثواني
-        for (let i = 5; i > 0; i--) {
-            countdownElement.textContent = i;
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-
-        // إزالة المؤقت بعد الانتهاء
-        countdownElement.remove();
-
-        // التقاط الصورة بعد المؤقت
-        const context = canvasElement.getContext('2d');
-        canvasElement.width = videoElement.videoWidth;
-        canvasElement.height = videoElement.videoHeight;
-        context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        capturedImageDataUrl = canvasElement.toDataURL('image/png');
-
-        // إيقاف تشغيل الكاميرا
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
-        }
-
-        // عرض الصورة الملتقطة مؤقتًا (اختياري)
-        photoPreview.src = capturedImageDataUrl;
-        photoPreview.classList.remove('hidden');
-
-        // متابعة إنشاء البطاقة
-        const now = new Date();
-
-        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Africa/Cairo', numberingSystem: 'latn' };
-        const dateOptions = { year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'long', timeZone: 'Africa/Cairo', numberingSystem: 'latn' };
-        let time = now.toLocaleTimeString('en-US', timeOptions);
-        let date = now.toLocaleDateString('ar-EG', dateOptions);
-        const dateEn = now.toLocaleDateString('en-US', { timeZone: 'Africa/Cairo', year: 'numeric', month: 'numeric', day: 'numeric' });
-        const weekdayAr = now.toLocaleDateString('ar-EG', { timeZone: 'Africa/Cairo', weekday: 'long' });
-        date = `${weekdayAr}، ${dateEn}`;
-        time = time.replace('AM', 'ص').replace('PM', 'م');
-
-        ticketName.textContent = name;
-        ticketDate.textContent = date;
-        ticketTime.textContent = time;
-        ticketType.textContent = recordType;
-
-        ticketTypeRow.className = 'flex items-center justify-between p-3 rounded-lg border-r-4';
-        ticketType.className = 'font-black text-lg';
-        if (recordType === 'حضور') {
-            ticketTypeRow.classList.add('bg-gradient-to-r', 'from-green-50', 'to-emerald-50', 'border-green-500');
-            ticketType.classList.add('text-green-800');
-        } else {
-            ticketTypeRow.classList.add('bg-gradient-to-r', 'from-red-50', 'to-rose-50', 'border-red-500');
-            ticketType.classList.add('text-red-800');
-        }
-
-        // إدراج الصورة في البطاقة
-        if (capturedImageDataUrl) {
-            ticketPhoto.src = capturedImageDataUrl;
-            ticketPhotoContainer.classList.remove('hidden');
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // إنشاء الصورة ومشاركتها
-        const canvas = await html2canvas(attendanceTicketWrapper, { 
-            scale: 3,
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-            width: 450
-        });
-
-        canvas.toBlob(async (blob) => {
-            if (!blob) throw new Error('فشل في تحويل الصورة');
-            const fileName = `حضور_${name}_${new Date().getTime()}.png`;
-            const file = new File([blob], fileName, { type: 'image/png' });
-
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                const shareData = {
-                    files: [file],
-                    title: `بطاقة ${recordType} - ${name}`,
-                    text: `إثبات ${recordType}\nالموظف: ${name}\n${date} - ${time}`
-                };
-
-                try {
-                    await navigator.share(shareData);
-                    loadingSpinner.classList.add('hidden');
-                    showStatus('✅ تمت المشاركة بنجاح!', 'success');
-                } catch (err) {
-                    if (err.name === 'AbortError') {
-                        loadingSpinner.classList.add('hidden');
-                        showStatus('❌ تم إلغاء المشاركة', 'error');
-                    } else throw err;
+                // إخفاء العناصر السابقة
+                statusMessage.classList.add('hidden');
+                imageContainer.classList.add('hidden');
+                ticketPhotoContainer.classList.add('hidden');
+                ticketPhoto.src = '';
+                capturedImageDataUrl = null; // إعادة تعيين الصورة
+                
+                // التحقق من الاسم
+                const name = employeeNameInput.value.trim();
+                if (!name) {
+                    showStatus('⚠️ الرجاء إدخال اسم الموظف أولاً', 'error');
+                    employeeNameInput.focus();
+                    return;
                 }
-            } else {
-                throw new Error('المشاركة غير مدعومة');
-            }
-        }, 'image/png', 1.0);
+                
+                // التحقق من نوع التسجيل
+                const recordTypeRadio = document.querySelector('input[name="recordType"]:checked');
+                if (!recordTypeRadio) {
+                    showStatus('⚠️ الرجاء اختيار نوع التسجيل (حضور أو انصراف)', 'error');
+                    return;
+                }
 
-    } catch (err) {
-        console.error('خطأ:', err);
-        try {
-            const canvas = await html2canvas(attendanceTicketWrapper, { 
-                scale: 3,
-                useCORS: true,
-                backgroundColor: '#ffffff',
-                logging: false,
-                width: 450
+                // إذا كانت البيانات صحيحة، افتح الكاميرا
+                startCameraCapture();
             });
-            generatedImage.src = canvas.toDataURL('image/png', 1.0);
-            imageContainer.classList.remove('hidden');
-            showStatus('ℹ️ المشاركة غير متاحة. يمكنك حفظ الصورة يدوياً', 'info');
-        } catch (canvasErr) {
-            showStatus('❌ حدث خطأ أثناء إنشاء الصورة', 'error');
-        }
-    } finally {
-        loadingSpinner.classList.add('hidden');
-    }
-});
 
+
+            // دالة إنشاء البطاقة والمشاركة (تُستدعى بعد الالتقاط)
+            async function createAndShareTicket() {
+                
+                // إظهار مؤشر التحميل
+                loadingSpinner.classList.remove('hidden');
+
+                // جلب البيانات مرة أخرى (للتأكيد)
+                const name = employeeNameInput.value.trim();
+                const recordType = document.querySelector('input[name="recordType"]:checked').value;
+                
+                try {
+                    // الحصول على التاريخ والوقت
+                    const now = new Date();
+                    const timeOptions = { 
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        hour12: true, 
+                        timeZone: 'Africa/Cairo', 
+                        numberingSystem: 'latn' 
+                    };
+                    const dateOptions = { 
+                        year: 'numeric', 
+                        month: 'numeric', 
+                        day: 'numeric', 
+                        weekday: 'long',
+                        timeZone: 'Africa/Cairo', 
+                        numberingSystem: 'latn' 
+                    };
+                    
+                    let time = now.toLocaleTimeString('en-US', timeOptions);
+                    let date = now.toLocaleDateString('ar-EG', dateOptions);
+                    const dateEn = now.toLocaleDateString('en-US', { timeZone: 'Africa/Cairo', year: 'numeric', month: 'numeric', day: 'numeric' });
+                    const weekdayAr = now.toLocaleDateString('ar-EG', { timeZone: 'Africa/Cairo', weekday: 'long' });
+                    date = `${weekdayAr}، ${dateEn}`;
+                    time = time.replace('AM', 'ص').replace('PM', 'م');
+
+                    // تحديث بيانات البطاقة
+                    ticketName.textContent = name;
+                    ticketDate.textContent = date;
+                    ticketTime.textContent = time;
+                    ticketType.textContent = recordType;
+                    
+                    // تغيير تنسيق نوع التسجيل
+                    ticketTypeRow.className = 'flex items-center justify-between p-3 rounded-lg border-r-4';
+                    ticketType.className = 'font-black text-lg';
+                    
+                    if (recordType === 'حضور') {
+                        ticketTypeRow.classList.add('bg-gradient-to-r', 'from-green-50', 'to-emerald-50', 'border-green-500');
+                        ticketType.classList.add('text-green-800');
+                    } else {
+                        ticketTypeRow.classList.add('bg-gradient-to-r', 'from-red-50', 'to-rose-50', 'border-red-500');
+                        ticketType.classList.add('text-red-800');
+                    }
+
+                    // إضافة الصورة الملتقطة للبطاقة
+                    if (capturedImageDataUrl) {
+                        ticketPhoto.src = capturedImageDataUrl;
+                        ticketPhotoContainer.classList.remove('hidden');
+                    }
+
+                    // انتظار قصير لتحميل الخطوط والصورة
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    // إنشاء الصورة باستخدام html2canvas
+                    const canvas = await html2canvas(attendanceTicketWrapper, { 
+                        scale: 3,
+                        useCORS: true,
+                        backgroundColor: '#ffffff',
+                        logging: false,
+                        width: 450
+                    });
+                    
+                    // تحويل إلى blob
+                    canvas.toBlob(async (blob) => {
+                        if (!blob) {
+                            throw new Error('فشل في تحويل الصورة');
+                        }
+                        
+                        const fileName = `حضور_${name}_${new Date().getTime()}.png`;
+                        const file = new File([blob], fileName, { type: 'image/png' });
+                        
+                        // محاولة المشاركة
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            const shareData = {
+                                files: [file],
+                                title: `بطاقة ${recordType} - ${name}`,
+                                text: `إثبات ${recordType}\nالموظف: ${name}\n${date} - ${time}`
+                            };
+                            
+                            try {
+                                await navigator.share(shareData);
+                                loadingSpinner.classList.add('hidden');
+                                showStatus('✅ تمت المشاركة بنجاح!', 'success');
+                            } catch (err) {
+                                if (err.name === 'AbortError') {
+                                    loadingSpinner.classList.add('hidden');
+                                    showStatus('❌ تم إلغاء المشاركة', 'error');
+                                } else {
+                                    throw err;
+                                }
+                            }
+                        } else {
+                            throw new Error('المشاركة غير مدعومة');
+                        }
+                        
+                    }, 'image/png', 1.0);
+
+                } catch (err) {
+                    console.error('خطأ:', err);
+                    
+                    // عرض الصورة في الصفحة كحل بديل
+                    try {
+                        const canvas = await html2canvas(attendanceTicketWrapper, { 
+                            scale: 3,
+                            useCORS: true,
+                            backgroundColor: '#ffffff',
+                            logging: false,
+                            width: 450
+                        });
+                        
+                        generatedImage.src = canvas.toDataURL('image/png', 1.0);
+                        imageContainer.classList.remove('hidden');
+                        showStatus('ℹ️ المشاركة غير متاحة. يمكنك حفظ الصورة يدوياً', 'info');
+                    } catch (canvasErr) {
+                        showStatus('❌ حدث خطأ أثناء إنشاء الصورة', 'error');
+                    }
+                } finally {
+                    loadingSpinner.classList.add('hidden');
+                }
+            } // نهاية دالة createAndShareTicket
 
             // تحسين تجربة المستخدم - Enter للتسجيل
             employeeNameInput.addEventListener('keypress', (e) => {
